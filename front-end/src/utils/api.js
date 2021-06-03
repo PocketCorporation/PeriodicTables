@@ -67,3 +67,47 @@ export async function listReservations(params, signal) {
     .then(formatReservationDate)
     .then(formatReservationTime);
 }
+
+export async function listTables(signal) {
+  const url = `${API_BASE_URL}/tables`;
+
+  return await fetchJson(url, { headers, signal }, []);
+}
+
+export async function createReservation(reservation, signal) {
+	const url = `${API_BASE_URL}/reservations`;
+
+	// this will convert our object into readable JSON as a string
+	const body = JSON.stringify({ data: reservation });
+
+	// we add method: "POST" as a part of the options, and also attach the body
+	return await fetchJson(url, { headers, signal, method: "POST", body }, []);
+}
+
+export async function createTable(table, signal) {
+	const url = `${API_BASE_URL}/tables`;
+
+	// this will convert our object into readable JSON as a string
+	const body = JSON.stringify({ data: table});
+
+	// we add method: "POST" as a part of the options, and also attach the body
+	return await fetchJson(url, { headers, signal, method: "POST", body }, []);
+}
+
+export async function updateSeatReservation(table_id, reservation_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const body = JSON.stringify({ data: {reservation_id}});
+  return await fetchJson(url, { headers, signal, method: "PUT", body }, []);
+}
+
+export async function deleteSeatReservation(reservation_id, table_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const body = JSON.stringify({ data: {reservation_id}});
+  return await fetchJson(url, { headers, signal, method: "DELETE", body }, []);
+}
+
+export async function updateReservationStatus(reservation_id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  const body = JSON.stringify({ data: { status: "cancelled"}});
+  return await fetchJson(url, { headers, signal, method: "PUT", body }, []);
+}
