@@ -67,6 +67,17 @@ export async function listReservations(params, signal) {
     .then(formatReservationDate)
     .then(formatReservationTime);
 }
+/* 
+
+export async function listReservationsByPhone(params, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations`);
+  Object.entries(params).forEach(([key, value]) =>
+    url.searchParams.append(key, value.toString())
+  );
+  return await fetchJson(url, { headers, signal }, [])
+    .then(formatReservationDate)
+    .then(formatReservationTime);
+} */
 
 export async function listTables(signal) {
   const url = `${API_BASE_URL}/tables`;
@@ -82,6 +93,22 @@ export async function createReservation(reservation, signal) {
 
 	// we add method: "POST" as a part of the options, and also attach the body
 	return await fetchJson(url, { headers, signal, method: "POST", body }, []);
+}
+
+export async function readReservation(reservationId, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservationId}`;
+
+  return await fetchJson(url, { headers, signal }, []);
+}
+
+export async function updateReservation(reservationId, updatedReservation, signal) {
+	const url = `${API_BASE_URL}/reservations/${reservationId}`;
+
+	// this will convert our object into readable JSON as a string
+	const body = JSON.stringify({ data: updatedReservation });
+
+	// we add method: "POST" as a part of the options, and also attach the body
+	return await fetchJson(url, { headers, signal, method: "PUT", body }, []);
 }
 
 export async function createTable(table, signal) {
